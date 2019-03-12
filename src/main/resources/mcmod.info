@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "basedefense",
+    "name": "Base Defense",
+    "description": "Beeps and boops for extra Security!",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      ".start"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
