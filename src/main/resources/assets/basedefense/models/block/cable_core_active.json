@@ -1,0 +1,6 @@
+{
+  "parent": "basedefense:block/cable_core",
+  "textures": {
+    "all": "basedefense:blocks/cable_active"
+  }
+}

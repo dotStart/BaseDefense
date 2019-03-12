@@ -1,0 +1,60 @@
+{
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        135,
+        0
+      ],
+      "scale": [
+        0.40,
+        0.40,
+        0.40
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all"
+        },
+        "east": {
+          "texture": "#all"
+        },
+        "north": {
+          "texture": "#all"
+        },
+        "south": {
+          "texture": "#all"
+        },
+        "up": {
+          "texture": "#all"
+        },
+        "west": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        7.5,
+        7.5,
+        8.5
+      ],
+      "shade": false,
+      "to": [
+        8.5,
+        8.5,
+        16
+      ]
+    }
+  ],
+  "parent": "block/block",
+  "textures": {
+    "all": "basedefense:blocks/cable"
+  }
+}
