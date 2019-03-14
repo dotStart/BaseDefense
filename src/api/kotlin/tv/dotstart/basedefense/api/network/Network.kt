@@ -67,7 +67,7 @@ interface Network {
    * of this list as they automatically de-register from the network during unload and are treated
    * as if they didn't even exist as of that point.
    */
-  val components: List<SecurityComponent>
+  val components: Set<SecurityComponent>
 
   /**
    * Registers a new component with this network.
