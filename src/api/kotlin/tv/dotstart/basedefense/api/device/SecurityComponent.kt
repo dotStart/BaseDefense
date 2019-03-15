@@ -49,5 +49,5 @@ interface SecurityComponent {
    * When re-connecting to neighboring blocks, this value should be evaluate against the identifiers
    * within candidates.
    */
-  val owner: PlayerReference?
+  val owner: PlayerReference
 }
