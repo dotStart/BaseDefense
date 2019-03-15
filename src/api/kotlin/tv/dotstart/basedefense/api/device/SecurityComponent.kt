@@ -17,6 +17,7 @@
 package tv.dotstart.basedefense.api.device
 
 import tv.dotstart.basedefense.api.network.Network
+import tv.dotstart.basedefense.api.util.PlayerReference
 
 /**
  * Represents a security device which may be connected to the network and communicate with various
@@ -37,4 +38,16 @@ interface SecurityComponent {
    * establish a connection with an identity bearing component.
    */
   val network: Network?
+
+  /**
+   * Identifies the person who initially placed this particular component.
+   *
+   * This value is persisted for all components even when they have yet to join a network as this
+   * prevents the deliberate hijacking of security networks by abusing chunk loading behavior (e.g.
+   * the fact that components cannot act while outside of a loaded chunk).
+   *
+   * When re-connecting to neighboring blocks, this value should be evaluate against the identifiers
+   * within candidates.
+   */
+  val owner: PlayerReference?
 }
