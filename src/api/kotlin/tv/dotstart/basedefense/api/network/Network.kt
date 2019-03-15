@@ -101,4 +101,14 @@ interface Network {
    * Transmits an arbitrary event to all registered components within this network.
    */
   fun postEvent(event: Event)
+
+  /**
+   * Evaluates whether a given security component is theoretically permitted to establish a
+   * connection with this network.
+   *
+   * Typically this method will simply compare the owners of components and the network in order to
+   * prevent access by unknown players. However, higher tier controllers may permit the
+   * configuration of ACLs for network components.
+   */
+  fun canConnect(device: SecurityComponent): Boolean
 }
