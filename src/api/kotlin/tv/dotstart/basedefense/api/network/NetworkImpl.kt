@@ -16,8 +16,23 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
   override var active = false
   override val components: MutableSet<SecurityComponent> = mutableSetOf()
 
+  protected fun promoteController(controller: SecurityController?) {
+    this.controller = controller
+
+    // TODO: Events
+  }
+
   override fun plusAssign(component: SecurityComponent) {
     this.components += component
+
+    if (component is SecurityController) {
+      if (this.controller == null) {
+        this.promoteController(component)
+      } else {
+        // TODO: Switch to invalid state
+      }
+    }
+
     // TODO: Event
   }
 
@@ -27,6 +42,15 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
 
   override fun minusAssign(component: SecurityComponent) {
     this.components -= component
+
+    if (component == this.controller) {
+      val controller = this.components
+          .find { it is SecurityController }
+          as SecurityController
+
+      this.promoteController(controller)
+    }
+
     // TODO: Event
   }
 
