@@ -32,6 +32,15 @@ import tv.dotstart.basedefense.api.util.PlayerReference
 interface SecurityComponent {
 
   /**
+   * Evaluates whether this component has been initialized and may be interacted with.
+   *
+   * This value typically exposes the internal initialization state of the component (e.g. when
+   * lateinit variables are used by the implementation). Callers are expected to not interact with
+   * components unless this val has been set to true.
+   */
+  val initialized: Boolean
+
+  /**
    * Identifies the network with which this component is currently communicating.
    *
    * When no network (e.g. null) is returned by this property, then the component has yet to
