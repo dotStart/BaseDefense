@@ -23,9 +23,15 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
   private val bus = EventBus()
 
   protected fun promoteController(controller: SecurityController?) {
+    val previous = this.controller
+
     this.controller = controller
 
-    // TODO: Events
+    if (controller != null) {
+      this.postEvent(ControllerPromotionEvent(controller))
+    } else if (previous != null) {
+      this.postEvent(ControllerDemotionEvent(previous))
+    }
   }
 
   override fun plusAssign(component: SecurityComponent) {

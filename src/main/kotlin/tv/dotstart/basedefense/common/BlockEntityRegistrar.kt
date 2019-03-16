@@ -16,6 +16,10 @@
  */
 package tv.dotstart.basedefense.common
 
+import net.minecraft.tileentity.TileEntity
+import tv.dotstart.basedefense.common.block.entity.CableBlockEntity
+import tv.dotstart.basedefense.common.block.entity.ControllerBlockEntity
+
 /**
  * Registers block entities (formerly known as tile entities) with their respective game registry.
  *
@@ -24,5 +28,7 @@ package tv.dotstart.basedefense.common
 object BlockEntityRegistrar {
 
   fun register() {
+    TileEntity.register("cable", CableBlockEntity::class.java)
+    TileEntity.register("controller", ControllerBlockEntity::class.java)
   }
 }

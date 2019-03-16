@@ -22,6 +22,7 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import tv.dotstart.basedefense.BaseDefense
 import tv.dotstart.basedefense.common.block.CableBlock
+import tv.dotstart.basedefense.common.block.ControllerBlock
 import tv.dotstart.basedefense.util.benchmark
 
 /**
@@ -40,7 +41,8 @@ object BlockRegistrar {
     BaseDefense.logger.benchmark("Block Registration") {
       registry.registerAll(
           CableBlock.Inactive,
-          CableBlock.Active
+          CableBlock.Active,
+          ControllerBlock
       )
     }
   }
