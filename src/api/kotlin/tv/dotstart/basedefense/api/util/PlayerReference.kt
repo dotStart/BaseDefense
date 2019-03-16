@@ -59,4 +59,17 @@ data class PlayerReference(val id: UUID, var displayName: String) {
       tag.getString(displayNameTagName) ?: throw IllegalArgumentException(
           "Missing structure property: displayName")
   )
+
+  override fun equals(other: Any?): Boolean {
+    if (this === other) return true
+    if (other !is PlayerReference) return false
+
+    if (id != other.id) return false
+
+    return true
+  }
+
+  override fun hashCode(): Int {
+    return id.hashCode()
+  }
 }
