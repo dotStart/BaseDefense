@@ -1,5 +1,6 @@
 package tv.dotstart.basedefense.api.device.impl
 
+import tv.dotstart.basedefense.api.device.SecurityDevice
 import tv.dotstart.basedefense.api.network.Network
 import tv.dotstart.basedefense.api.network.NetworkImpl
 
@@ -18,7 +19,15 @@ abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity(), S
     protected set
 
   override fun onInitialize() {
-    this.updateNetwork()
+    this.initializeNetwork()
+  }
+
+  override fun onLoad() {
+    if (!super.initialized) {
+      return
+    }
+
+    this.initializeNetwork()
   }
 
   /**
@@ -28,13 +37,18 @@ abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity(), S
    * completely new network which matches the owner (and potentially to disconnect gracefully and
    * trigger the correct events).
    */
-  protected fun updateNetwork() {
+  private fun initializeNetwork() {
     if (!this::network.isInitialized || this.network.owner != this.owner) {
       if (this::network.isInitialized) {
         this.network -= this
       }
 
-      this.network = NetworkImpl(this.owner)
+      val network = NetworkImpl(this.owner)
+      this.network = network
+      this.onCreateNetwork(network)
     }
+  }
+
+  protected open fun onCreateNetwork(network: NetworkImpl) {
   }
 }
