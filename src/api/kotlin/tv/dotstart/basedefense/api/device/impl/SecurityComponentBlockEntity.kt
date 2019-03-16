@@ -13,6 +13,18 @@ abstract class SecurityComponentBlockEntity : BaseSecurityComponentBlockEntity()
   override var network: Network? = null
     protected set
 
+  override fun onInitialize() {
+    this.updateConnections()
+  }
+
+  override fun onLoad() {
+    if (!this.initialized) {
+      return
+    }
+
+    this.updateConnections()
+  }
+
   /**
    * Searches for new components in the adjacent blocks and establishes a connection to the network
    * if permitted.
@@ -29,7 +41,7 @@ abstract class SecurityComponentBlockEntity : BaseSecurityComponentBlockEntity()
     for (face in EnumFacing.values()) {
       val position = this.pos.offset(face)
       val entity = this.world.getTileEntity(position)
-      if (entity !is SecurityComponent) {
+      if (entity !is SecurityComponent || !entity.initialized) {
         continue
       }
 
