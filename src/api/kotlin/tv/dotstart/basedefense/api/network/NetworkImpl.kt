@@ -1,7 +1,11 @@
 package tv.dotstart.basedefense.api.network
 
+import com.google.common.eventbus.EventBus
 import tv.dotstart.basedefense.api.device.SecurityComponent
 import tv.dotstart.basedefense.api.device.SecurityController
+import tv.dotstart.basedefense.api.network.event.ConflictEvent
+import tv.dotstart.basedefense.api.network.event.ControllerDemotionEvent
+import tv.dotstart.basedefense.api.network.event.ControllerPromotionEvent
 import tv.dotstart.basedefense.api.network.event.Event
 import tv.dotstart.basedefense.api.util.PlayerReference
 
@@ -15,6 +19,8 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
 
   override var active = false
   override val components: MutableSet<SecurityComponent> = mutableSetOf()
+
+  private val bus = EventBus()
 
   protected fun promoteController(controller: SecurityController?) {
     this.controller = controller
@@ -34,6 +40,8 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
     }
 
     // TODO: Event
+
+    this.bus.register(component)
   }
 
   override fun plusAssign(network: Network) {
@@ -42,6 +50,7 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
 
   override fun minusAssign(component: SecurityComponent) {
     this.components -= component
+    this.bus.unregister(component)
 
     if (component == this.controller) {
       val controller = this.components
@@ -54,9 +63,7 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
     // TODO: Event
   }
 
-  override fun postEvent(event: Event) {
-    TODO("not implemented")
-  }
+  override fun postEvent(event: Event) = this.bus.post(event)
 
   override fun canConnect(device: SecurityComponent): Boolean {
     return this.owner == device.owner
