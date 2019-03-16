@@ -44,7 +44,10 @@ abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity(), S
       }
 
       val network = NetworkImpl(this.owner)
+
       this.network = network
+      this.network += this
+
       this.onCreateNetwork(network)
     }
   }
