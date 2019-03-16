@@ -16,15 +16,11 @@
  */
 package tv.dotstart.basedefense.common.block.entity
 
-import net.minecraft.tileentity.TileEntity
-import tv.dotstart.basedefense.api.device.SecurityComponent
-import tv.dotstart.basedefense.api.network.Network
+import tv.dotstart.basedefense.api.device.impl.SecurityComponentBlockEntity
 
 /**
+ * Represents a standard data transmission cable which connects one or more components in a network.
+ *
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
-class CableBlockEntity : TileEntity(), SecurityComponent {
-
-  override var network: Network? = null
-    private set
-}
+class CableBlockEntity : SecurityComponentBlockEntity()
