@@ -1,36 +1,17 @@
 package tv.dotstart.basedefense.api.device.impl
 
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import tv.dotstart.basedefense.api.device.SecurityComponent
 import tv.dotstart.basedefense.api.network.Network
-import tv.dotstart.basedefense.api.util.PlayerReference
 
 /**
  * Provides a simple base implementation for standard security components which establish a
  * connection to established networks in adjacent entities.
  */
-abstract class SecurityComponentBlockEntity : TileEntity(), SecurityComponent {
+abstract class SecurityComponentBlockEntity : BaseSecurityComponentBlockEntity() {
 
-  override lateinit var owner: PlayerReference
-    protected set
   override var network: Network? = null
     protected set
-
-  /**
-   * Performs the initialization of this particular component.
-   *
-   * This method is to be invoked immediately after it has been placed in the world in order to
-   * update its respective owner object. Note that all calls (including persistence related
-   * invocations) are ignored until this method is invoked.
-   *
-   * This method causes an entity invalidation.
-   */
-  fun initialize(owner: PlayerReference) {
-    this.owner = owner
-    this.markDirty()
-  }
 
   /**
    * Searches for new components in the adjacent blocks and establishes a connection to the network
@@ -39,7 +20,7 @@ abstract class SecurityComponentBlockEntity : TileEntity(), SecurityComponent {
    * Note that this method should be invoked whenever a security device is placed or initialized
    * in a neighboring block.
    */
-  fun updateConnections(origin: EnumFacing?) {
+  fun updateConnections() {
     if (this.network != null) {
       // already connected to another network, cannot connect to anybody else right now
       return
@@ -70,28 +51,5 @@ abstract class SecurityComponentBlockEntity : TileEntity(), SecurityComponent {
       val state = this.world.getBlockState(this.pos)
       this.world.notifyBlockUpdate(this.pos, state, state, 3) // TODO: only push neighbor updates?
     }
-  }
-
-  override fun readFromNBT(compound: NBTTagCompound) {
-    super.readFromNBT(compound)
-
-    if (!compound.hasKey("security")) {
-      // TODO: Log warning
-      return
-    }
-
-    val security = compound.getCompoundTag("security")
-    this.owner = PlayerReference(security.getCompoundTag("owner"))
-  }
-
-  override fun writeToNBT(compound: NBTTagCompound): NBTTagCompound {
-    if (this::owner.isInitialized) {
-      val security = NBTTagCompound()
-      security.setTag("owner", this.owner.nbt)
-
-      compound.setTag("security", security)
-    }
-
-    return super.writeToNBT(compound)
   }
 }
