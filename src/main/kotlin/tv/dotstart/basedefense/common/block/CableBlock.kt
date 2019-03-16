@@ -16,20 +16,27 @@
  */
 package tv.dotstart.basedefense.common.block
 
+import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.material.Material
 import net.minecraft.block.properties.PropertyBool
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
+import net.minecraft.world.World
 import tv.dotstart.basedefense.api.device.SecurityComponent
+import tv.dotstart.basedefense.api.util.PlayerReference
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.downConnected
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.eastConnected
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.northConnected
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.southConnected
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.upConnected
 import tv.dotstart.basedefense.common.block.CableBlock.Properties.westConnected
+import tv.dotstart.basedefense.common.block.entity.CableBlockEntity
 
 /**
  * Provides a standard communication and power cable which connects various security components with
@@ -38,7 +45,8 @@ import tv.dotstart.basedefense.common.block.CableBlock.Properties.westConnected
  * @author <a href="mailto:johannesd@torchmind.com">Johannes Donath</a>
  */
 abstract class CableBlock(suffix: String? = null) :
-    ModBlock("""cable_block${suffix?.let { "_$it" } ?: ""}""", Material.CLOTH) {
+    ModBlock("""cable_block${suffix?.let { "_$it" } ?: ""}""", Material.CLOTH),
+    ITileEntityProvider {
 
   object Properties {
     val northConnected: PropertyBool = PropertyBool.create("north")
@@ -60,6 +68,8 @@ abstract class CableBlock(suffix: String? = null) :
       westConnected, upConnected, downConnected
   )
 
+  override fun createNewTileEntity(worldIn: World, meta: Int) = CableBlockEntity()
+
   override fun getActualState(state: IBlockState, worldIn: IBlockAccess, pos: BlockPos) = state
       .withProperty(northConnected, this.canBeConnectedTo(worldIn, pos, EnumFacing.NORTH))
       .withProperty(eastConnected, this.canBeConnectedTo(worldIn, pos, EnumFacing.EAST))
@@ -76,7 +86,20 @@ abstract class CableBlock(suffix: String? = null) :
   override fun shouldSideBeRendered(blockState: IBlockState, blockAccess: IBlockAccess,
       pos: BlockPos, side: EnumFacing) = true
 
-  object Inactive : CableBlock()
+  object Inactive : CableBlock() {
+
+    override fun onBlockPlacedBy(worldIn: World, pos: BlockPos, state: IBlockState,
+        placer: EntityLivingBase, stack: ItemStack) {
+      if (worldIn.isRemote) {
+        return
+      }
+
+      val entity = worldIn.getTileEntity(pos) as? CableBlockEntity ?: return
+      val player = placer as? EntityPlayer ?: return
+
+      entity.initialize(PlayerReference(player))
+    }
+  }
 
   object Active : CableBlock("active") {
 
