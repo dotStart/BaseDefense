@@ -2,6 +2,7 @@ package tv.dotstart.basedefense.api.device.impl
 
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.EnumFacing
 import tv.dotstart.basedefense.api.device.SecurityComponent
 import tv.dotstart.basedefense.api.util.PlayerReference
 
@@ -26,6 +27,14 @@ abstract class BaseSecurityComponentBlockEntity : TileEntity(), SecurityComponen
     protected set
 
   /**
+   * Retrieves a list of faces which are currently interacting with one or more network components.
+   */
+  val connections: Set<EnumFacing>
+    get() = EnumFacing.values()
+        .filter { this.hasConnectionOnSide(it) }
+        .toSet()
+
+  /**
    * Performs the initialization of this particular component.
    *
    * This method is to be invoked immediately after it has been placed in the world in order to
@@ -44,6 +53,20 @@ abstract class BaseSecurityComponentBlockEntity : TileEntity(), SecurityComponen
    * Extension point which is invoked during first entity initialization before its invalidation.
    */
   protected open fun onInitialize() {
+  }
+
+  /**
+   * Evaluates whether this component has a connection on the given side.
+   */
+  fun hasConnectionOnSide(face: EnumFacing): Boolean {
+    if (!this.initialized) {
+      return false
+    }
+
+    val component = this.world.getTileEntity(this.pos.offset(face)) as? SecurityComponent
+        ?: return false
+
+    return this.isConnectedTo(component)
   }
 
   override fun readFromNBT(compound: NBTTagCompound) {

@@ -80,4 +80,7 @@ interface SecurityComponent {
    */
   fun onDeRegister() {
   }
+
+  fun isConnectedTo(
+      component: SecurityComponent) = this.initialized && component.initialized && this.network == component.network
 }
