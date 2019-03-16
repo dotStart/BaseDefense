@@ -61,6 +61,12 @@ interface Network {
   val active: Boolean
 
   /**
+   * Identifies whether this network is currently in conflict (e.g. more than one controller has
+   * been connected).
+   */
+  val conflict: Boolean
+
+  /**
    * Retrieves a complete list of all components which are currently connected to the network.
    *
    * Note that components which currently reside inside of unloaded chunks are typically not part

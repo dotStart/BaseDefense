@@ -18,6 +18,12 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
     protected set
 
   override var active = false
+  override var conflict = false
+    protected set(value) {
+      field = value
+
+      this.postEvent(ConflictEvent(value))
+    }
   override val components: MutableSet<SecurityComponent> = mutableSetOf()
 
   private val bus = EventBus()
@@ -41,7 +47,7 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
       if (this.controller == null) {
         this.promoteController(component)
       } else {
-        // TODO: Switch to invalid state
+        this.conflict = true
       }
     }
 
@@ -59,10 +65,12 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
     this.bus.unregister(component)
 
     if (component == this.controller) {
-      val controller = this.components
-          .find { it is SecurityController }
-          as SecurityController
+      val controllers = this.components
+          .filter { it is SecurityController }
 
+      this.conflict = controllers.size <= 1
+
+      val controller = controllers.firstOrNull() as? SecurityController
       this.promoteController(controller)
     }
 
