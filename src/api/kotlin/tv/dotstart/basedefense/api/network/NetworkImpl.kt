@@ -17,7 +17,8 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
   override var controller: SecurityController? = null
     protected set
 
-  override var active = false
+  override val active
+    get() = this.controller?.networkActive ?: false
   override var conflict = false
     protected set(value) {
       field = value
