@@ -58,7 +58,7 @@ interface Network {
    * Networks may also be marked disabled due to other causes (for instance, when entering a generic
    * maintenance mode where changes to the network are temporarily permitted).
    */
-  var active: Boolean
+  val active: Boolean
 
   /**
    * Retrieves a complete list of all components which are currently connected to the network.
