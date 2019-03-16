@@ -43,7 +43,7 @@ abstract class BaseSecurityComponentBlockEntity : TileEntity(), SecurityComponen
   /**
    * Extension point which is invoked during first entity initialization before its invalidation.
    */
-  protected fun onInitialize() {
+  protected open fun onInitialize() {
   }
 
   override fun readFromNBT(compound: NBTTagCompound) {
