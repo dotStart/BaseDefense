@@ -1,7 +1,7 @@
 package tv.dotstart.basedefense.api.network
 
 import tv.dotstart.basedefense.api.device.SecurityComponent
-import tv.dotstart.basedefense.api.device.SecurityDevice
+import tv.dotstart.basedefense.api.device.SecurityController
 import tv.dotstart.basedefense.api.network.event.Event
 import tv.dotstart.basedefense.api.util.PlayerReference
 
@@ -10,7 +10,8 @@ import tv.dotstart.basedefense.api.util.PlayerReference
  */
 open class NetworkImpl(override val owner: PlayerReference) : Network {
 
-  override var controller: SecurityDevice? = null
+  override var controller: SecurityController? = null
+    protected set
 
   override var active = false
   override val components: MutableSet<SecurityComponent> = mutableSetOf()

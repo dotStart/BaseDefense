@@ -17,7 +17,7 @@
 package tv.dotstart.basedefense.api.network
 
 import tv.dotstart.basedefense.api.device.SecurityComponent
-import tv.dotstart.basedefense.api.device.SecurityDevice
+import tv.dotstart.basedefense.api.device.SecurityController
 import tv.dotstart.basedefense.api.network.event.Event
 import tv.dotstart.basedefense.api.util.PlayerReference
 
@@ -49,7 +49,7 @@ interface Network {
    * When the controller is absent (e.g. the network is currently unpowered and without its control
    * information), null is returned instead.
    */
-  val controller: SecurityDevice?
+  val controller: SecurityController?
 
   /**
    * Identifies whether this network is currently active (e.g. its controller device is inside a
