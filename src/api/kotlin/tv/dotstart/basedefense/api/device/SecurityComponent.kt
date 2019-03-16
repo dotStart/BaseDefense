@@ -59,4 +59,25 @@ interface SecurityComponent {
    * within candidates.
    */
   val owner: PlayerReference
+
+  /**
+   * Event callback which is invoked when the component registration has completed.
+   */
+  fun onRegister() {
+  }
+
+  /**
+   * Event callback which is invoked when two networks are joined together (e.g. this component is
+   * shifted into a different network).
+   *
+   * Note that the previous network is destroyed once the join of all components completes.
+   */
+  fun onJoin(network: Network) {
+  }
+
+  /**
+   * Event callback which is invoked when the component de-registration has completed.
+   */
+  fun onDeRegister() {
+  }
 }

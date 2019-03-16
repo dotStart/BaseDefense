@@ -49,9 +49,10 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
       }
     }
 
+    this.bus.register(component)
     this.postEvent(ComponentRegistrationEvent(component))
 
-    this.bus.register(component)
+    component.onRegister()
   }
 
   override fun plusAssign(network: Network) {
@@ -60,7 +61,6 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
 
   override fun minusAssign(component: SecurityComponent) {
     this.components -= component
-    this.bus.unregister(component)
 
     if (component == this.controller) {
       val controllers = this.components
@@ -73,6 +73,9 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
     }
 
     this.postEvent(ComponentDeRegistrationEvent(component))
+    this.bus.unregister(component)
+
+    component.onDeRegister()
   }
 
   override fun postEvent(event: Event) = this.bus.post(event)
