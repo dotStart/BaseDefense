@@ -14,6 +14,10 @@ abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity() {
   override lateinit var network: Network
     protected set
 
+  override fun onInitialize() {
+    this.updateNetwork()
+  }
+
   /**
    * Updates the internally cached network.
    *
