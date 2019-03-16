@@ -3,10 +3,7 @@ package tv.dotstart.basedefense.api.network
 import com.google.common.eventbus.EventBus
 import tv.dotstart.basedefense.api.device.SecurityComponent
 import tv.dotstart.basedefense.api.device.SecurityController
-import tv.dotstart.basedefense.api.network.event.ConflictEvent
-import tv.dotstart.basedefense.api.network.event.ControllerDemotionEvent
-import tv.dotstart.basedefense.api.network.event.ControllerPromotionEvent
-import tv.dotstart.basedefense.api.network.event.Event
+import tv.dotstart.basedefense.api.network.event.*
 import tv.dotstart.basedefense.api.util.PlayerReference
 
 /**
@@ -52,7 +49,7 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
       }
     }
 
-    // TODO: Event
+    this.postEvent(ComponentRegistrationEvent(component))
 
     this.bus.register(component)
   }
@@ -75,7 +72,7 @@ open class NetworkImpl(override val owner: PlayerReference) : Network {
       this.promoteController(controller)
     }
 
-    // TODO: Event
+    this.postEvent(ComponentDeRegistrationEvent(component))
   }
 
   override fun postEvent(event: Event) = this.bus.post(event)
