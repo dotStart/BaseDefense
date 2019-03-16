@@ -64,4 +64,8 @@ abstract class SecurityComponentBlockEntity : BaseSecurityComponentBlockEntity()
       this.world.notifyBlockUpdate(this.pos, state, state, 3) // TODO: only push neighbor updates?
     }
   }
+
+  override fun onJoin(network: Network) {
+    this.network = network
+  }
 }

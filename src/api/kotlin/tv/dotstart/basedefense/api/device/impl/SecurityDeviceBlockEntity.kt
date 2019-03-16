@@ -51,4 +51,8 @@ abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity(), S
 
   protected open fun onCreateNetwork(network: NetworkImpl) {
   }
+
+  override fun onJoin(network: Network) {
+    this.network = network
+  }
 }
