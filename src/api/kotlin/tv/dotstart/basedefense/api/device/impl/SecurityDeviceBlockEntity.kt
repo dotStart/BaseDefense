@@ -9,7 +9,10 @@ import tv.dotstart.basedefense.api.network.NetworkImpl
  * The purpose of this abstraction is to enable the automatic creation and joining of networks upon
  * entity initialization.
  */
-abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity() {
+abstract class SecurityDeviceBlockEntity : BaseSecurityComponentBlockEntity(), SecurityDevice {
+
+  override val initialized: Boolean
+    get() = super.initialized && this::network.isInitialized
 
   override lateinit var network: Network
     protected set
