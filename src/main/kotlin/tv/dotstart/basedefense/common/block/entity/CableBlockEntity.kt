@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tv.dotstart.basedefense.common.tile
+package tv.dotstart.basedefense.common.block.entity
 
 import net.minecraft.tileentity.TileEntity
 import tv.dotstart.basedefense.api.device.SecurityComponent
