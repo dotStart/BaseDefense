@@ -16,6 +16,7 @@
  */
 package tv.dotstart.basedefense.api.util
 
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 import java.util.*
 
@@ -49,6 +50,8 @@ data class PlayerReference(val id: UUID, var displayName: String) {
     tag.setString(displayNameTagName, this.displayName)
     tag
   }
+
+  constructor(player: EntityPlayer) : this(player.persistentID, player.displayNameString)
 
   constructor(tag: NBTTagCompound) : this(
       tag.getUniqueId(playerIdTagName) ?: throw IllegalArgumentException(
